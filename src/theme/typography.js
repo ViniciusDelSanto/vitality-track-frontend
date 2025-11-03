@@ -11,7 +11,14 @@ export const typography = {
     md: 16,
     lg: 18,
     xl: 20,
-    xxl: 22,
+    xxl: 24,
+  },
+  fontWeight: {
+    regular: "400",
+    medium: "500",
+    semibold: "600",
+    bold: "700",
+    extrabold: "800",
   },
   lineHeight: {
     tight: 1.2,

@@ -1,9 +1,21 @@
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from "react-native"
+"use client"
+
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Animated } from "react-native"
+import { useEffect, useRef } from "react"
 import { colors, spacing, borderRadius, shadows } from "../theme/colors"
 
 export default function AtletaHome({ navigation }) {
   const lastESR = 6
-  const weeklyProgress = 0.8 // 80% of weekly goal
+  const weeklyProgress = 0.8
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start()
+  }, [])
 
   const getESRColor = (value) => {
     if (value <= 3) return colors.danger
@@ -12,53 +24,53 @@ export default function AtletaHome({ navigation }) {
   }
 
   const getESRLabel = (value) => {
-    if (value <= 3) return "Baixo"
+    if (value <= 3) return "Crítico"
     if (value <= 6) return "Moderado"
     return "Ótimo"
   }
 
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.greeting}>Olá, Rafael 👋</Text>
+          <Text style={styles.greeting}>Bem-vindo, Rafael</Text>
           <Text style={styles.subGreeting}>Vamos treinar hoje?</Text>
         </View>
 
-        {/* Weekly Progress Indicator */}
-        <View style={[styles.progressCard, shadows.md]}>
+        {/* Weekly Progress Card */}
+        <Animated.View style={[styles.progressCard, shadows.md, { opacity: fadeAnim }]}>
           <View style={styles.progressHeader}>
-            <Text style={styles.progressTitle}>Progresso Semanal</Text>
-            <Text style={styles.progressValue}>4/5 treinos</Text>
+            <View>
+              <Text style={styles.progressTitle}>Progresso Semanal</Text>
+              <Text style={styles.progressSubtitle}>4 de 5 sessões completas</Text>
+            </View>
+            <View style={styles.progressBadge}>
+              <Text style={styles.progressBadgeText}>80%</Text>
+            </View>
           </View>
           <View style={styles.progressBarContainer}>
             <View style={[styles.progressBar, { width: `${weeklyProgress * 100}%` }]} />
           </View>
-          <Text style={styles.progressLabel}>80% da meta semanal concluída</Text>
-        </View>
+          <Text style={styles.progressLabel}>Sessão de hoje: Treino Intervalado - 18h00</Text>
+        </Animated.View>
 
-        {/* Last ESR Card */}
-        <View style={[styles.lastESRCard, shadows.md]}>
-          <View style={styles.lastESRHeader}>
-            <Text style={styles.lastESRTitle}>Último ESR Registrado</Text>
-            <View style={[styles.lastESRBadge, { backgroundColor: getESRColor(lastESR) }]}>
-              <Text style={styles.lastESRValue}>{lastESR}</Text>
-            </View>
-          </View>
-          <Text style={styles.lastESRLabel}>{getESRLabel(lastESR)} - Registrado há 2 horas</Text>
-        </View>
-
-        {/* ESR Card */}
-        <View style={[styles.esrCard, { backgroundColor: getESRColor(lastESR) }]}>
+        {/* ESR Card - Featured */}
+        <Animated.View style={[styles.esrCard, { backgroundColor: getESRColor(lastESR) }, { opacity: fadeAnim }]}>
           <View style={styles.esrContent}>
             <View style={styles.esrHeader}>
               <View>
                 <View style={styles.esrTitleRow}>
                   <Text style={styles.esrEmoji}>❤️</Text>
-                  <Text style={styles.esrTitle}>Escala Subjetiva</Text>
+                  <View>
+                    <Text style={styles.esrTitle}>Escala Subjetiva (ESR)</Text>
+                    <Text style={styles.esrSubtitle}>Avaliação 2h atrás</Text>
+                  </View>
                 </View>
-                <Text style={styles.esrSubtitle}>Como você está hoje?</Text>
               </View>
               <View style={styles.esrValueContainer}>
                 <Text style={styles.esrValue}>{lastESR}</Text>
@@ -68,56 +80,75 @@ export default function AtletaHome({ navigation }) {
             <TouchableOpacity
               style={styles.esrButton}
               onPress={() => navigation.navigate("ESRModal")}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
-              <Text style={styles.esrButtonText}>✨ ENVIAR ESR</Text>
+              <Text style={styles.esrButtonText}>REGISTRAR NOVO ESR</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Stats Grid */}
-        <View style={styles.statsGrid}>
-          <View style={[styles.statCard, shadows.md]}>
-            <View style={[styles.statIcon, { backgroundColor: colors.primary }]}>
+        <Animated.View style={[styles.statsGrid, { opacity: fadeAnim }]}>
+          <View style={[styles.statCard, shadows.sm]}>
+            <View style={[styles.statIcon, { backgroundColor: colors.primary + "15" }]}>
               <Text style={styles.statEmoji}>💪</Text>
             </View>
             <Text style={styles.statValue}>4/5</Text>
             <Text style={styles.statLabel}>Sessões Semana</Text>
           </View>
-          <View style={[styles.statCard, shadows.md]}>
-            <View style={[styles.statIcon, { backgroundColor: colors.success }]}>
-              <Text style={styles.statEmoji}>📈</Text>
+          <View style={[styles.statCard, shadows.sm]}>
+            <View style={[styles.statIcon, { backgroundColor: colors.success + "15" }]}>
+              <Text style={styles.statEmoji}>🔥</Text>
             </View>
             <Text style={styles.statValue}>342</Text>
-            <Text style={styles.statLabel}>Carga Total</Text>
+            <Text style={styles.statLabel}>Carga Total (TSS)</Text>
           </View>
-        </View>
+        </Animated.View>
 
-        {/* Upcoming Sessions */}
+        {/* Upcoming Sessions Section */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Próximas Sessões</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("History")}>
-              <Text style={styles.sectionLink}>Ver histórico →</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Sessions")}>
+              <Text style={styles.sectionLink}>Ver todas</Text>
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity
-            style={[styles.sessionCard, shadows.md]}
+            style={[styles.sessionCard, shadows.sm]}
             onPress={() => navigation.navigate("SessionDetail", { sessionId: "1" })}
-            activeOpacity={0.8}
+            activeOpacity={0.85}
           >
-            <View style={styles.sessionHeader}>
-              <Text style={styles.sessionTitle}>Treino Intervalado Z4</Text>
-              <Text style={styles.sessionDate}>Hoje, 18:00</Text>
+            <View style={styles.sessionLeft}>
+              <View style={styles.sessionTime}>
+                <Text style={styles.sessionTimeText}>Hoje</Text>
+              </View>
+              <View>
+                <Text style={styles.sessionTitle}>Treino Intervalado Z4</Text>
+                <Text style={styles.sessionTime2}>18h00 - 45 min</Text>
+              </View>
             </View>
-            <View style={styles.sessionFooter}>
-              <View style={styles.sessionBadge}>
-                <Text style={styles.sessionBadgeText}>⏱️ 45 min</Text>
+            <View style={[styles.zoneIndicator, { backgroundColor: colors.zone4 }]}>
+              <Text style={styles.zoneText}>Z4</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.sessionCard, shadows.sm]}
+            onPress={() => navigation.navigate("SessionDetail", { sessionId: "2" })}
+            activeOpacity={0.85}
+          >
+            <View style={styles.sessionLeft}>
+              <View style={styles.sessionTime}>
+                <Text style={styles.sessionTimeText}>Amanhã</Text>
               </View>
-              <View style={[styles.sessionBadge, { backgroundColor: colors.action + "20" }]}>
-                <Text style={[styles.sessionBadgeText, { color: colors.action }]}>⚡ Zona 4</Text>
+              <View>
+                <Text style={styles.sessionTitle}>Recuperação Z1-Z2</Text>
+                <Text style={styles.sessionTime2}>19h00 - 60 min</Text>
               </View>
+            </View>
+            <View style={[styles.zoneIndicator, { backgroundColor: colors.zone1 }]}>
+              <Text style={styles.zoneText}>Z1</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -147,10 +178,12 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: colors.text,
     marginBottom: spacing.xs,
+    letterSpacing: -0.5,
   },
   subGreeting: {
-    fontSize: 14,
+    fontSize: 15,
     color: colors.textSecondary,
+    fontWeight: "500",
   },
   progressCard: {
     backgroundColor: colors.white,
@@ -161,25 +194,37 @@ const styles = StyleSheet.create({
   progressHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginBottom: spacing.md,
   },
   progressTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
     color: colors.text,
+    marginBottom: spacing.xs,
   },
-  progressValue: {
+  progressSubtitle: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    fontWeight: "500",
+  },
+  progressBadge: {
+    backgroundColor: colors.primary + "15",
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.lg,
+  },
+  progressBadgeText: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "700",
     color: colors.primary,
   },
   progressBarContainer: {
-    height: 8,
+    height: 10,
     backgroundColor: colors.neutralBg,
     borderRadius: borderRadius.full,
     overflow: "hidden",
-    marginBottom: spacing.sm,
+    marginBottom: spacing.md,
   },
   progressBar: {
     height: "100%",
@@ -189,45 +234,18 @@ const styles = StyleSheet.create({
   progressLabel: {
     fontSize: 12,
     color: colors.textSecondary,
-  },
-  lastESRCard: {
-    backgroundColor: colors.white,
-    borderRadius: borderRadius.xl,
-    padding: spacing.lg,
-    marginBottom: spacing.md,
-  },
-  lastESRHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: spacing.sm,
-  },
-  lastESRTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text,
-  },
-  lastESRBadge: {
-    width: 40,
-    height: 40,
-    borderRadius: borderRadius.md,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  lastESRValue: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: colors.white,
-  },
-  lastESRLabel: {
-    fontSize: 13,
-    color: colors.textSecondary,
+    fontWeight: "500",
   },
   esrCard: {
     borderRadius: borderRadius.xl,
     padding: spacing.lg,
     marginBottom: spacing.lg,
     overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 5,
   },
   esrContent: {
     gap: spacing.lg,
@@ -239,49 +257,53 @@ const styles = StyleSheet.create({
   },
   esrTitleRow: {
     flexDirection: "row",
-    alignItems: "center",
-    gap: spacing.sm,
-    marginBottom: spacing.xs,
+    alignItems: "flex-start",
+    gap: spacing.md,
   },
   esrEmoji: {
-    fontSize: 20,
+    fontSize: 28,
+    marginTop: spacing.xs,
   },
   esrTitle: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "700",
     color: colors.white,
   },
   esrSubtitle: {
     fontSize: 12,
-    color: "rgba(255,255,255,0.8)",
+    color: "rgba(255,255,255,0.85)",
+    marginTop: spacing.xs,
+    fontWeight: "500",
   },
   esrValueContainer: {
     alignItems: "flex-end",
   },
   esrValue: {
-    fontSize: 40,
-    fontWeight: "800",
+    fontSize: 48,
+    fontWeight: "900",
     color: colors.white,
-    lineHeight: 40,
+    lineHeight: 48,
   },
   esrLabel: {
-    fontSize: 12,
-    color: "rgba(255,255,255,0.8)",
+    fontSize: 11,
+    color: "rgba(255,255,255,0.85)",
     marginTop: spacing.xs,
+    fontWeight: "600",
   },
   esrButton: {
     height: 52,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: borderRadius.xl,
-    borderWidth: 2,
-    borderColor: "rgba(255,255,255,0.3)",
+    backgroundColor: "rgba(255,255,255,0.25)",
+    borderRadius: borderRadius.lg,
+    borderWidth: 1.5,
+    borderColor: "rgba(255,255,255,0.35)",
     justifyContent: "center",
     alignItems: "center",
   },
   esrButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: 14,
+    fontWeight: "700",
     color: colors.white,
+    letterSpacing: 0.3,
   },
   statsGrid: {
     flexDirection: "row",
@@ -291,8 +313,8 @@ const styles = StyleSheet.create({
   statCard: {
     flex: 1,
     backgroundColor: colors.white,
-    borderRadius: borderRadius.xl,
-    padding: spacing.lg,
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
     alignItems: "center",
   },
   statIcon: {
@@ -301,21 +323,22 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: spacing.md,
+    marginBottom: spacing.sm,
   },
   statEmoji: {
     fontSize: 24,
   },
   statValue: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "800",
     color: colors.text,
     marginBottom: spacing.xs,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 11,
     color: colors.textSecondary,
     textAlign: "center",
+    fontWeight: "600",
   },
   section: {
     marginBottom: spacing.lg,
@@ -327,47 +350,65 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "800",
     color: colors.text,
+    letterSpacing: -0.3,
   },
   sectionLink: {
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: "700",
     color: colors.primary,
   },
   sessionCard: {
     backgroundColor: colors.white,
-    borderRadius: borderRadius.xl,
-    padding: spacing.lg,
-    marginBottom: spacing.md,
-  },
-  sessionHeader: {
-    marginBottom: spacing.md,
-  },
-  sessionTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: colors.text,
-    marginBottom: spacing.xs,
-  },
-  sessionDate: {
-    fontSize: 12,
-    color: colors.textSecondary,
-  },
-  sessionFooter: {
+    borderRadius: borderRadius.lg,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  sessionLeft: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
     gap: spacing.md,
   },
-  sessionBadge: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    backgroundColor: colors.primary + "20",
+  sessionTime: {
+    backgroundColor: colors.primary + "15",
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
     borderRadius: borderRadius.md,
+    minWidth: 60,
+    alignItems: "center",
   },
-  sessionBadgeText: {
-    fontSize: 12,
-    fontWeight: "600",
+  sessionTimeText: {
+    fontSize: 11,
+    fontWeight: "700",
     color: colors.primary,
+  },
+  sessionTime2: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+    fontWeight: "500",
+  },
+  sessionTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: colors.text,
+  },
+  zoneIndicator: {
+    width: 48,
+    height: 48,
+    borderRadius: borderRadius.md,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  zoneText: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: colors.white,
   },
 })

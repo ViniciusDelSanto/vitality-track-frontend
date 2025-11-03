@@ -6,24 +6,41 @@ import { colors, spacing, borderRadius, shadows } from "../theme/colors"
 
 export default function Toast({ message, type = "success", visible, onHide }) {
   const opacity = new Animated.Value(0)
+  const translateY = new Animated.Value(-20)
 
   useEffect(() => {
     if (visible) {
-      Animated.sequence([
+      Animated.parallel([
         Animated.timing(opacity, {
           toValue: 1,
           duration: 300,
           useNativeDriver: true,
         }),
-        Animated.delay(3000),
-        Animated.timing(opacity, {
+        Animated.timing(translateY, {
           toValue: 0,
           duration: 300,
           useNativeDriver: true,
         }),
-      ]).start(() => {
-        if (onHide) onHide()
-      })
+      ]).start()
+
+      const timeout = setTimeout(() => {
+        Animated.parallel([
+          Animated.timing(opacity, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(translateY, {
+            toValue: -20,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+        ]).start(() => {
+          if (onHide) onHide()
+        })
+      }, 3500)
+
+      return () => clearTimeout(timeout)
     }
   }, [visible])
 
@@ -32,9 +49,9 @@ export default function Toast({ message, type = "success", visible, onHide }) {
   const backgroundColor = type === "error" ? colors.danger : type === "warning" ? colors.warning : colors.success
 
   return (
-    <Animated.View style={[styles.container, { opacity, backgroundColor }, shadows.lg]}>
+    <Animated.View style={[styles.container, { opacity, transform: [{ translateY }] }, shadows.lg]}>
       <Text style={styles.emoji}>{type === "error" ? "❌" : type === "warning" ? "⚠️" : "✅"}</Text>
-      <Text style={styles.message}>{message}</Text>
+      <Text style={[styles.message, { backgroundColor }]}>{message}</Text>
     </Animated.View>
   )
 }
@@ -47,18 +64,20 @@ const styles = StyleSheet.create({
     right: spacing.lg,
     flexDirection: "row",
     alignItems: "center",
-    padding: spacing.md,
-    borderRadius: borderRadius.lg,
-    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.xl,
+    gap: spacing.md,
     zIndex: 1000,
   },
   emoji: {
-    fontSize: 20,
+    fontSize: 24,
   },
   message: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: "600",
     color: colors.white,
+    lineHeight: 20,
   },
 })

@@ -1,27 +1,27 @@
 {
   "expo": {
-    "name": "FitnessManager",
-    "slug": "fitness-manager",
-    "version": "1.0.0",
+    "name": "VitalityTrack",
+    "slug": "vitality-track",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FF6B35"
+      "backgroundColor": "#06A77D"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fitnessmanager.app"
+      "bundleIdentifier": "com.vitalitytrack.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FF6B35"
+        "backgroundColor": "#06A77D"
       },
-      "package": "com.fitnessmanager.app"
+      "package": "com.vitalitytrack.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

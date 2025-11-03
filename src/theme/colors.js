@@ -1,29 +1,46 @@
 export const colors = {
-  primary: "#0B67A4",
-  primaryLight: "#1280C4",
-  primaryDark: "#084D7A",
-  action: "#FF7A2D",
-  actionLight: "#FF9654",
-  success: "#17A661",
-  successLight: "#1FC978",
-  warning: "#F5A623",
-  warningLight: "#FFB84D",
-  danger: "#D64545",
-  dangerLight: "#E66060",
-  neutralBg: "#F6F7F9",
-  divider: "#E6E9EE",
-  text: "#1A1A1A",
-  textSecondary: "#737373",
-  textTertiary: "#4A4A4A",
+  // Primary brand colors - teal/green for vitality
+  primary: "#06A77D",
+  primaryLight: "#2EC9A6",
+  primaryDark: "#04825F",
+
+  // Secondary accent - professional teal
+  secondary: "#0A8B6F",
+  secondaryLight: "#1BA389",
+
+  // Action colors - vibrant for CTAs
+  action: "#00D4FF",
+  actionLight: "#4FE3FF",
+  actionDark: "#0099BB",
+
+  // Status colors
+  success: "#00C853",
+  successLight: "#69F0AE",
+  warning: "#FFB300",
+  warningLight: "#FFD54F",
+  danger: "#D32F2F",
+  dangerLight: "#EF5350",
+
+  // Neutral palette - clean and professional
+  neutralBg: "#F5F7FA",
+  divider: "#E0E6EB",
+  border: "#D9E0E8",
+
+  // Text colors - high contrast
+  text: "#1A1F2E",
+  textSecondary: "#6B7280",
+  textTertiary: "#9CA3AF",
+
+  // White and black
   white: "#FFFFFF",
   black: "#000000",
 
-  // Zone colors
-  zone1: "#17A661",
-  zone2: "#8BC34A",
-  zone3: "#F5A623",
-  zone4: "#FF7A2D",
-  zone5: "#D64545",
+  // Heart rate zones - vivid gradient
+  zone1: "#00C853", // Recovery
+  zone2: "#76FF03", // Endurance
+  zone3: "#FFD600", // Tempo
+  zone4: "#FF9100", // Threshold
+  zone5: "#D32F2F", // Max
 }
 
 export const spacing = {
@@ -46,9 +63,9 @@ export const borderRadius = {
 export const shadows = {
   sm: {
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
     elevation: 1,
   },
   md: {
@@ -56,13 +73,13 @@ export const shadows = {
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
-    elevation: 4,
+    elevation: 3,
   },
   lg: {
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.1,
     shadowRadius: 24,
-    elevation: 8,
+    elevation: 6,
   },
 }

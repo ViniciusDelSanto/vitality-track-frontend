@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { StatusBar } from "expo-status-bar"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
+import { colors } from "./src/theme/colors"
 
 // Screens
 import SplashWelcome from "./src/screens/SplashWelcome"
@@ -22,7 +23,7 @@ import PlanEditor from "./src/screens/PlanEditor"
 import AssessmentCreate from "./src/screens/AssessmentCreate"
 import MessagesInbox from "./src/screens/MessagesInbox"
 
-// Icons (simple SVG replacements)
+// Icons
 import { HomeIcon, ListIcon, ChartIcon, MessageIcon, UserIcon } from "./src/components/Icons"
 
 const Stack = createStackNavigator()
@@ -33,14 +34,20 @@ function AthleteTabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#0B67A4",
-        tabBarInactiveTintColor: "#737373",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: 64,
+          paddingBottom: 12,
+          paddingTop: 12,
           borderTopWidth: 1,
-          borderTopColor: "#E6E9EE",
+          borderTopColor: colors.border,
+          backgroundColor: colors.white,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "600",
+          marginTop: 4,
         },
       }}
     >
@@ -93,14 +100,20 @@ function CoachTabNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "#0B67A4",
-        tabBarInactiveTintColor: "#737373",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarStyle: {
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          height: 64,
+          paddingBottom: 12,
+          paddingTop: 12,
           borderTopWidth: 1,
-          borderTopColor: "#E6E9EE",
+          borderTopColor: colors.border,
+          backgroundColor: colors.white,
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "600",
+          marginTop: 4,
         },
       }}
     >
