@@ -8,7 +8,7 @@ import { StatusBar } from "expo-status-bar"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { colors } from "./src/theme/colors"
 
-// Screens
+
 import SplashWelcome from "./src/screens/SplashWelcome"
 import AuthLogin from "./src/screens/AuthLogin"
 import AtletaHome from "./src/screens/AtletaHome"
@@ -23,7 +23,6 @@ import PlanEditor from "./src/screens/PlanEditor"
 import AssessmentCreate from "./src/screens/AssessmentCreate"
 import MessagesInbox from "./src/screens/MessagesInbox"
 
-// Icons
 import { HomeIcon, ListIcon, ChartIcon, MessageIcon, UserIcon } from "./src/components/Icons"
 
 const Stack = createStackNavigator()
